@@ -1,0 +1,52 @@
+/*{{{element selector*/
+body {
+    background-color: black;
+}
+        /*}}}element selector*/
+
+/*{{{class selector*/
+.fullPage {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+    margin: auto;
+    overflow-x: hidden;
+} /*fullPage*/
+.spriteClass {
+    position: fixed;
+    left: 11vw;
+    top: 58vh;
+    width: 15vw;
+    height: 15vh;
+    margin: auto;
+    overflow-x: hidden;
+} /*#happy*/
+/*}}}class*/
+
+/*{{{id selector*/
+#myBody {
+
+} /*#myBody*/
+
+#backgroundX {
+
+} /*#backgroundX*/
+
+#sprite {
+    transition: transform 900ms;
+} /*#sprite*/
+
+#happy {
+    position: fixed;
+    left: 11vw;
+    top: 58vh;
+    width: 15vw;
+    height: 15vh;
+    margin: auto;
+    overflow-x: hidden;
+} /*#happy*/
+
+
+/*}}}id selector*/
