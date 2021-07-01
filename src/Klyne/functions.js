@@ -7,60 +7,44 @@ let img_bgX;
 let sprite,spriteNum;
 let movX, movY;
 let jumpSound, fallSound, fallenSound, loseSound, callSound, settleSound, winSound;
+let isCalled = false;
 ;//}}}variable declarations
 
 //{{{event listeners
 window.onload = initWin();
 window.addEventListener("resize", initWin);
-window.addEventListener("keyup", evalKey, false); //capture keypress on bubbling (false) phase
+window.addEventListener("keydown", evalKey, false); //capture keypress on bubbling (false) phase
 function evalKey(evnt) {
     let keyPressed = evnt.keyCode;
     console.log ("Pressed: ",keyPressed);
-    if (keyPressed==37) spriteJump("down");
-    if (keyPressed==39) spriteJump("up");
+
+    switch (keyPressed) {
+       case 48  : if (!isCalled)callKlyne();break; //key: 0
+       case 37  : if (isCalled) spriteJump("down"); break; //key: right
+       case 39  : if (isCalled) spriteJump("up"); break; //key: left
+       default  : return;
+    } //switch (keyPressed)
+
 } //evalKey(event)
 //}}}event listeners
 
-//{{{initializations
-const checkElement = async selector => {
-  while ( document.querySelector(selector) === null) {
-    await new Promise( resolve =>  requestAnimationFrame(resolve) )
-  } //while ( document.querySelector(selector) === null)
-  return document.querySelector(selector); 
-}; //const checkElement = async selector
 
 function initWin() {
+document.getElementById('backgroundX').onload = function () { //wait for element before loading
 setTimeout (function() { //set delay before calculating drawable parameters
     //Get a reference to the canvas
     bgX = document.getElementById('backgroundX');
     sprite = document.getElementById('sprite');
     spriteNum = 1;
-    let bgXstyle = window.getComputedStyle(bgX);
 
     jumpSound = new sound("./src/Klyne/wav/jump.mp3");
     fallSound = new sound("./src/Klyne/wav/fall.mp3");
-    fallenSound = new sound("./src/Klyne/wav/fallen.mp3");
-    loseSound = new sound("./src/Klyne/wav/lose.mp3");
     callSound = new sound("./src/Klyne/wav/call.mp3");
     settleSound = new sound("./src/Klyne/wav/settle.mp3");
     winSound = new sound("./src/Klyne/wav/win.mp3");
-    //context_bgX = bgX.getContext('2d');
-    //resizeElements();
-    //console.log ("windowWidth: "+ window.innerWidth);
-
-    //console.log ("bgX CSS-height: "+ bgXstyle.height);
-    //console.log ("bgX CSS-width: "+ bgXstyle.width);
-    //console.log ("bgX posX: "+ bgX.offsetLeft);
-    //console.log ("bgX posY: "+ bgX.offsetTop);
-    //console.log ("bgX clientWidth: "+ bgX.clientWidth);
-    //console.log ("bgX naturalWidth: "+ bgX.naturalWidth); //images have natural widths
-
-    //let comVal;
-    //comVal =  Math.round(180/80);
-    //console.log ("Ans: "+comVal);
-
-    //window.requestAnimationFrame(animateLoop);
+    
 }, 3);//setTimeOut (function()
+};//document.getElementById ... wait for element before loading
 } //function init()
 
 function resizeElements() {
@@ -79,17 +63,25 @@ function animateLoop(timeStamp) {
 //}}}window init
 
 //{{{handler functions
+function callKlyne() {
+    callSound.start();
+    insertCss ("#guidemsg {display: none;}");
+    insertCss (".spriteClass {display: block;}");
+    bgX.src = ("./src/Klyne/img/BG1.jpg");
+    isCalled = true;
+} //function callKlyne()
 function spriteJump(jumpDirection) {
 
     //console.log(spriteNum);
     if (jumpDirection=="up") {
-        jumpSound.play();
+        jumpSound.start();
         spriteNum++;
         //console.log("jump up");
         if (spriteNum==6) spriteNum=5;
     } //if (jumpDirection=="up)
     if (jumpDirection=="down") {
-        fallSound.play();
+        fallSound.start();
+        settleSound.stop();
         spriteNum--;
         console.log("jump down");
         if (spriteNum==0) spriteNum=1;
@@ -125,11 +117,17 @@ function sound(src) {
     this.sound.setAttribute("controls", "none");
     this.sound.style.display = "none";
     document.body.appendChild(this.sound);
+    this.start = function(){
+        this.sound.pause();
+        this.sound.currentTime = 0;
+        this.sound.play();
+    } //this.start = function(){
     this.play = function(){
         this.sound.play();
     } //this.play = function(){
     this.stop = function(){
         this.sound.pause();
+        this.sound.currentTime = 0;
     }//this.stop = function(){    
 }//function sound(src)
 

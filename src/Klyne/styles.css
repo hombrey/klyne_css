@@ -15,6 +15,7 @@ body {
     overflow-x: hidden;
 } /*fullPage*/
 .spriteClass {
+    display: none;
     position: fixed;
     left: 11vw;
     top: 58vh;
@@ -26,13 +27,16 @@ body {
 /*}}}class*/
 
 /*{{{id selector*/
-#myBody {
 
-} /*#myBody*/
-
-#backgroundX {
-
-} /*#backgroundX*/
+#guidemsg{
+    position: fixed;
+    left: 40vw;
+    top: 30vh;
+    display: block;
+    font-family: sans-serif;    
+    font-size: 1.5em;
+    opacity: 0.6;
+}/*guidemsg*/ 
 
 #sprite {
     transition: transform 900ms;
