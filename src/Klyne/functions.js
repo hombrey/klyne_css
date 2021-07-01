@@ -6,7 +6,8 @@ let bgX;
 let img_bgX;
 let sprite,spriteNum;
 let movX, movY;
-let jumpSound, fallSound, fallenSound, loseSound, callSound, settleSound, winSound;
+let jumpSound, fallSound, callSound, settleSound, winSound;
+let sourceDir;
 let isCalled = false;
 ;//}}}variable declarations
 
@@ -28,7 +29,7 @@ function evalKey(evnt) {
 } //evalKey(event)
 //}}}event listeners
 
-
+//{{{window init
 function initWin() {
 document.getElementById('backgroundX').onload = function () { //wait for element before loading
 setTimeout (function() { //set delay before calculating drawable parameters
@@ -37,11 +38,14 @@ setTimeout (function() { //set delay before calculating drawable parameters
     sprite = document.getElementById('sprite');
     spriteNum = 1;
 
-    jumpSound = new sound("./src/Klyne/wav/jump.mp3");
-    fallSound = new sound("./src/Klyne/wav/fall.mp3");
-    callSound = new sound("./src/Klyne/wav/call.mp3");
-    settleSound = new sound("./src/Klyne/wav/settle.mp3");
-    winSound = new sound("./src/Klyne/wav/win.mp3");
+    //Get project source
+    sourceDir = document.getElementById("srcdir").innerHTML;
+
+    jumpSound = new sound(sourceDir+"wav/jump.mp3");
+    fallSound = new sound(sourceDir+"wav/fall.mp3");
+    callSound = new sound(sourceDir+"wav/call.mp3");
+    settleSound = new sound(sourceDir+"wav/settle.mp3");
+    winSound = new sound(sourceDir+"wav/win.mp3");
     
 }, 3);//setTimeOut (function()
 };//document.getElementById ... wait for element before loading
@@ -67,7 +71,7 @@ function callKlyne() {
     callSound.start();
     insertCss ("#guidemsg {display: none;}");
     insertCss (".spriteClass {display: block;}");
-    bgX.src = ("./src/Klyne/img/BG1.jpg");
+    bgX.src = (sourceDir+"img/BG1.jpg");
     isCalled = true;
 } //function callKlyne()
 function spriteJump(jumpDirection) {
@@ -95,9 +99,9 @@ function spriteJump(jumpDirection) {
     insertCss ("#sprite {transform: translate("+movX[spriteNum-1]+"vw,"+movY[spriteNum-1]+"vh);}");
     
     setTimeout (function() {
-        sprite.src ="./src/Klyne/img/sprite"+spriteNum+".png"; 
+        sprite.src =sourceDir+"img/sprite"+spriteNum+".png"; 
         if (spriteNum==5) {
-            bgX.src ="./src/Klyne/img/BG6.jpg"; 
+            bgX.src =sourceDir+"img/BG6.jpg"; 
             winSound.play();
         }// if spriteNum == 5)
         if ( (spriteNum<5) && (jumpDirection=="up") ) settleSound.play();
